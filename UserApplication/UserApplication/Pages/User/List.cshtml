@@ -1,0 +1,33 @@
+﻿@page
+@model UserApplication.Pages.User.ListModel
+@{
+}
+
+<h1>Users</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var user in Model.users)
+            {
+                <tr>
+                <td>@user.Id</td>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+                <td>@user.Phone</td>
+                <td>
+                    <a class="btn btn-primary" href="/User/Edit?id=@user.Id">Edit</a> &nbsp;
+                    <a class="btn btn-danger" href="/User/delete?id=@user.Id">Delete</a>
+                </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -1,0 +1,35 @@
+﻿@page
+@model UserApplication.Pages.User.EditModel
+@{
+}
+
+<form method="post">
+    <div class="row mb-md-3">
+        <div class="col-sm-3">
+            <label>Name</label>
+        </div>
+        <div class="col-sm-3">
+            <input type="text" name="Name" value="@Model.user.Name" />
+        </div>
+    </div>
+    <div class="row mb-md-3">
+        <div class="col-sm-3">
+            <label>Email</label>
+        </div>
+        <div class="col-sm-3">
+            <input type="email" name="Email" value="@Model.user.Email" />
+        </div>
+    </div>
+    <div class="row mb-md-3">
+        <div class="col-sm-3">
+            <label>Phone</label>
+        </div>
+        <div class="col-sm-3">
+            <input type="number" name="Phone" value="@Model.user.Phone" />
+        </div>
+    </div>
+    <div class="col-sm-3 text-centre">
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
+

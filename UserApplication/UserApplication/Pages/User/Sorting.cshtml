@@ -1,0 +1,43 @@
+﻿@page
+@model UserApplication.Pages.User.SortingModel
+@{
+}
+
+<h2>Users</h2>
+
+    <form method="get">
+        <label for="sortOrder">Sort by User ID:</label>
+        <select id="sortOrder" name="sortOrder" asp-for="SortOrder" asp-items="@Model.SortOrderOptions">
+            <option value=""> Select Sorting Order </option>
+        </select>
+
+        <label for="sortBy">Sort by Name</label>
+        <select id="sortBy" name="sortBy" asp-for="SortBy" asp-items="@Model.SortByOptions">
+            <option value="">Select Sorting property</option>
+        </select>
+        <button type="submit">Sort</button>
+    </form>
+
+ <div class="mt-6">
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.users)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+                <td>@user.Phone</td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div> 

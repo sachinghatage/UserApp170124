@@ -1,0 +1,14 @@
+﻿@page
+@using UserApplication.Model;
+@inject IConfiguration configuration;
+
+
+
+@{
+    DataAccessLayer dal = new DataAccessLayer();
+    int id = Convert.ToInt32(Request.Query["id"]);
+    dal.deleteUser(id,configuration);
+
+    Response.Redirect("/User/List");
+}
+
