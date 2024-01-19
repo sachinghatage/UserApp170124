@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\IBS 4\\Desktop\\dotnet_mvc\\CrudRazorPages\\UserApplication\\UserApplication\\UserApplication.csproj": {}
+    "C:\\Users\\IBS 4\\Desktop\\git\\UserApp170124\\UserApplication\\UserApplication\\UserApplication.csproj": {}
   },
   "projects": {
-    "C:\\Users\\IBS 4\\Desktop\\dotnet_mvc\\CrudRazorPages\\UserApplication\\UserApplication\\UserApplication.csproj": {
+    "C:\\Users\\IBS 4\\Desktop\\git\\UserApp170124\\UserApplication\\UserApplication\\UserApplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\IBS 4\\Desktop\\dotnet_mvc\\CrudRazorPages\\UserApplication\\UserApplication\\UserApplication.csproj",
+        "projectUniqueName": "C:\\Users\\IBS 4\\Desktop\\git\\UserApp170124\\UserApplication\\UserApplication\\UserApplication.csproj",
         "projectName": "UserApplication",
-        "projectPath": "C:\\Users\\IBS 4\\Desktop\\dotnet_mvc\\CrudRazorPages\\UserApplication\\UserApplication\\UserApplication.csproj",
+        "projectPath": "C:\\Users\\IBS 4\\Desktop\\git\\UserApp170124\\UserApplication\\UserApplication\\UserApplication.csproj",
         "packagesPath": "C:\\Users\\IBS 4\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\IBS 4\\Desktop\\dotnet_mvc\\CrudRazorPages\\UserApplication\\UserApplication\\obj\\",
+        "outputPath": "C:\\Users\\IBS 4\\Desktop\\git\\UserApp170124\\UserApplication\\UserApplication\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\IBS 4\\AppData\\Roaming\\NuGet\\NuGet.Config",

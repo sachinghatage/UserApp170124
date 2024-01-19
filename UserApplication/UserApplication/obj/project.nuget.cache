@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "l5q8oPkRIn0+V4zhkU8Wrcpb47e7ocxuTfzjzKvTfkGmKVfmkq2SJbWCLbW575zkFunbpFoQV83a4UNw39HluQ==",
+  "dgSpecHash": "QbYBdLG3IfSOHqySQYbNMY6pxeT9FPb5ea08sWjwZkkPuutxt86kTYNTGHMTaeE41BsWQbZ7Fc13TfGsNl874Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\IBS 4\\Desktop\\dotnet_mvc\\CrudRazorPages\\UserApplication\\UserApplication\\UserApplication.csproj",
+  "projectFilePath": "C:\\Users\\IBS 4\\Desktop\\git\\UserApp170124\\UserApplication\\UserApplication\\UserApplication.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\IBS 4\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\IBS 4\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",

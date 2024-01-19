@@ -9,11 +9,19 @@ namespace UserApplication.Model
         {
             using(SqlConnection connection=new SqlConnection(configuration.GetConnectionString("DBCS").ToString()))
             {
-                string query = "insert into users values('"+user.Name+"','"+user.Email+"','"+user.Phone+"')";
-                SqlCommand command = new SqlCommand(query,connection);
-                connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();
+                
+                 string query = "INSERT INTO users (Name, Email, Phone, FileContent) VALUES (@Name, @Email, @Phone, CONVERT(VARBINARY(MAX), @FileContent))";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Name", user.Name);
+                    command.Parameters.AddWithValue("@Email", user.Email);
+                    command.Parameters.AddWithValue("@Phone", user.Phone);
+                    command.Parameters.AddWithValue("@FileContent", user.FileContent); // Assuming user.FileContent is a byte array
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
