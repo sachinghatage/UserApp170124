@@ -5,12 +5,13 @@ namespace UserApplication.Model
 {
     public class DataAccessLayer
     {
-        public void Saveuser(Users user,IConfiguration configuration)
+        public void Saveuser(Users user, IConfiguration configuration)
         {
-            using(SqlConnection connection=new SqlConnection(configuration.GetConnectionString("DBCS").ToString()))
+            using (
+                SqlConnection connection = new SqlConnection(configuration.GetConnectionString("DBCS").ToString()))
             {
-                
-                 string query = "INSERT INTO users (Name, Email, Phone, FileContent) VALUES (@Name, @Email, @Phone, CONVERT(VARBINARY(MAX), @FileContent))";
+
+                string query = "INSERT INTO users (Name, Email, Phone, FileContent,Gender) VALUES (@Name, @Email, @Phone, CONVERT(VARBINARY(MAX), @FileContent),@Gender)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -18,6 +19,7 @@ namespace UserApplication.Model
                     command.Parameters.AddWithValue("@Email", user.Email);
                     command.Parameters.AddWithValue("@Phone", user.Phone);
                     command.Parameters.AddWithValue("@FileContent", user.FileContent); // Assuming user.FileContent is a byte array
+                    command.Parameters.AddWithValue("@Gender", user.UserGender.ToString());//by default numbers are stored in db for enum so tostring() is used
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -25,24 +27,33 @@ namespace UserApplication.Model
             }
         }
 
-        public List<Users> GetUsers(IConfiguration configuration)
+        public List<Users> GetUsers(IConfiguration configuration,int currentPage,int pageSize)
         {
-            List<Users> users=new List<Users>();
-            using (SqlConnection connection=new SqlConnection(configuration.GetConnectionString("DBCS")))
+            List<Users> users = new List<Users>();
+            using (SqlConnection connection = new SqlConnection(configuration.GetConnectionString("DBCS")))
             {
                 connection.Open();
-                string query = "select * from users";
-                using(SqlCommand command=new SqlCommand(query, connection))
+                int offset = (currentPage - 1) * pageSize;
+                string query = "SELECT * FROM users ORDER By Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    using(SqlDataReader reader=command.ExecuteReader()) 
+                    command.Parameters.AddWithValue("@Offset",offset);
+                    command.Parameters.AddWithValue("@PageSize",pageSize);
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             Users user = new Users();
                             user.Id = Convert.ToInt32(reader["Id"]);
                             user.Name = Convert.ToString(reader["Name"]);
-                            user.Email =Convert.ToString( reader["Email"]);
-                            user.Phone = Convert.ToInt32(reader["phone"]);
+                            user.Email = Convert.ToString(reader["Email"]);
+                            user.Phone = Convert.ToInt32(reader["Phone"]);
+                            string userGender = Convert.ToString(reader["Gender"]);
+
+                            if (Enum.TryParse(userGender, out Gender enumgender))
+                            {
+                                user.UserGender = enumgender;
+                            }
 
                             users.Add(user);
                         }
@@ -52,54 +63,71 @@ namespace UserApplication.Model
             return users;
         }
 
-        public void deleteUser(int id,IConfiguration configuration)
+        public void deleteUser(int id, IConfiguration configuration)
         {
-            using(SqlConnection connection=new SqlConnection(configuration.GetConnectionString("DBCS")))
+            using (SqlConnection connection = new SqlConnection(configuration.GetConnectionString("DBCS")))
             {
                 connection.Open();
-                string query = "delete from users where id = '"+id+"'";
-               
-                SqlCommand command = new SqlCommand(query,connection);
+                string query = "delete from users where id = '" + id + "'";
+
+                SqlCommand command = new SqlCommand(query, connection);
                 command.ExecuteNonQuery();
                 connection.Close();
             }
         }
 
-        public void UpdateUser(Users user,IConfiguration configuration)
+        public void UpdateUser(Users user, IConfiguration configuration)
         {
-            using(SqlConnection connection=new SqlConnection(configuration.GetConnectionString("DBCS")))
+            using (SqlConnection connection = new SqlConnection(configuration.GetConnectionString("DBCS")))
             {
                 connection.Open();
-                string query = "update users set Name='"+user.Name+"',Email='"+user.Email+"',Phone='"+user.Phone+"' where id='"+user.Id+"'";
-                SqlCommand command = new SqlCommand(query,connection);
+                string query = "update users set Name='" + user.Name + "',Email='" + user.Email + "',Phone='" + user.Phone + "' where id='" + user.Id + "'";
+                SqlCommand command = new SqlCommand(query, connection);
                 command.ExecuteNonQuery();
                 connection.Close();
             }
         }
 
-        public Users GetUser(int id,IConfiguration configuration)
+        public Users GetUser(int id, IConfiguration configuration)
         {
             Users user = new Users();
-            using(SqlConnection connection =new SqlConnection(configuration.GetConnectionString("DBCS")))
+            using (SqlConnection connection = new SqlConnection(configuration.GetConnectionString("DBCS")))
             {
                 connection.Open();
-                string query = "select * from users where Id='"+id+"'";
-                using(SqlCommand command=new SqlCommand(query,connection))
+                string query = "select * from users where Id='" + id + "'";
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    using(SqlDataReader reader=command.ExecuteReader())
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        while(reader.Read())
+                        while (reader.Read())
                         {
-                            user.Id =Convert.ToInt32( reader["Id"]);
-                            user.Name =Convert.ToString( reader["Name"]);
-                            user.Email =Convert.ToString( reader["Email"]);
+                            user.Id = Convert.ToInt32(reader["Id"]);
+                            user.Name = Convert.ToString(reader["Name"]);
+                            user.Email = Convert.ToString(reader["Email"]);
                             user.Phone = Convert.ToInt32(reader["Phone"]);
 
-                        }                    
+                        }
                     }
                 }
             }
             return user;
+        }
+
+
+        public int GetTotalUserCounts(IConfiguration configuration)
+        {
+            int totalRecords = 0;
+            using(SqlConnection connection=new SqlConnection(configuration.GetConnectionString("DBCS").ToString()))
+            {
+                connection.Open();
+                string query = "SELECT COUNT(*) FROM users";
+
+                using (SqlCommand command = new SqlCommand(query, connection)) {
+                    totalRecords = Convert.ToInt32(command.ExecuteScalar());
+                        }
+            }
+
+            return totalRecords;
         }
 
 

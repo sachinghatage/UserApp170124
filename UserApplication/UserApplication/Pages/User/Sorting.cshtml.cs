@@ -15,6 +15,8 @@ namespace UserApplication.Pages.User
             this.configuration = configuration;
         }
         public List<Users> users { get; set; }
+        public int CurrentPage { get; set; } = 1;
+        public int PageSize { get; set; } = 6;
 
         [BindProperty(SupportsGet = true)]
         public string SortOrder { get; set; }
@@ -41,7 +43,7 @@ namespace UserApplication.Pages.User
         public void OnGet()
         {
             DataAccessLayer dal = new DataAccessLayer();
-            users = dal.GetUsers(configuration);
+            users = dal.GetUsers(configuration,CurrentPage,PageSize);
 
             if (SortOrder == "asc")
             {
