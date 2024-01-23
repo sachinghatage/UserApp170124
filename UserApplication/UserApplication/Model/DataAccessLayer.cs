@@ -27,18 +27,19 @@ namespace UserApplication.Model
             }
         }
 
-        public List<Users> GetUsers(IConfiguration configuration,int currentPage,int pageSize)
+        public List<Users> GetUsers(IConfiguration configuration)
         {
             List<Users> users = new List<Users>();
             using (SqlConnection connection = new SqlConnection(configuration.GetConnectionString("DBCS")))
             {
                 connection.Open();
-                int offset = (currentPage - 1) * pageSize;
-                string query = "SELECT * FROM users ORDER By Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
+                /* int offset = (currentPage - 1) * pageSize;
+                 string query = "SELECT * FROM users ORDER By Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";*/
+                string query = "select * from users";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@Offset",offset);
-                    command.Parameters.AddWithValue("@PageSize",pageSize);
+                    /*command.Parameters.AddWithValue("@Offset",offset);
+                    command.Parameters.AddWithValue("@PageSize",pageSize);*/
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
@@ -112,24 +113,7 @@ namespace UserApplication.Model
             }
             return user;
         }
-
-
-        public int GetTotalUserCounts(IConfiguration configuration)
-        {
-            int totalRecords = 0;
-            using(SqlConnection connection=new SqlConnection(configuration.GetConnectionString("DBCS").ToString()))
-            {
-                connection.Open();
-                string query = "SELECT COUNT(*) FROM users";
-
-                using (SqlCommand command = new SqlCommand(query, connection)) {
-                    totalRecords = Convert.ToInt32(command.ExecuteScalar());
-                        }
-            }
-
-            return totalRecords;
-        }
-
+     
 
     }
 }

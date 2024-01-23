@@ -1,5 +1,6 @@
 ﻿@page
 @model UserApplication.Pages.User.ListModel
+@using UserApplication.Model;
 @{
 }
 
@@ -35,17 +36,3 @@
     </tbody>
 </table>
 
-<div class="pagination">
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            @for(int i = 1; i <= Model.TotalPages; i++)
-            {
-                <li class="page-item @(i==Model.CurrentPage? "active":"")">
-                    <a class="page-link" asp-page="/User/List" asp-route-page="@i">@i</a>
-                </li>
-            }
-        </ul>
-
-    </nav>
-
-</div>
