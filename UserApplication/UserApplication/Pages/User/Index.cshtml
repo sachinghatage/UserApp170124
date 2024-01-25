@@ -30,21 +30,7 @@
             <input type="number" name="Phone" value="@Model.user.Phone" class="form-control"/>
         </div>
     </div>
-    <div class="row mb-md-3">
-        <div class="col-md-3">
-            <label>File:</label>
-        </div>
-        <div class="col-md-3">
-            @if (Model.user.FileContent != null && Model.user.FileContent.Length > 0)
-            {
-                <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.user.FileContent)" alt="File Preview" />
-            }
-            else
-            {
-                <input type="file" name="FileContent" class="form-control" />
-            }
-        </div>
-    </div>
+    
 
     @* <div class="row mb-md-3">
         <div class="col-md-3">
@@ -66,8 +52,59 @@
         <input type="radio" id="female" name="Gender" value="Female" @(Model.user.UserGender == Gender.Female) />
         <label for="female">Female</label>
     </div>
-     
+    <!-- New address fields -->
+    <div class="mt-4">
+    <div class="row mb-md-3">
+        <div class="col-md-3">
+            <label>Street:</label>
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="Street" value="@Model.userAddress.Street" class="form-control" />
+        </div>
+    </div>
 
+    <div class="row mb-md-3">
+        <div class="col-md-3">
+            <label>City:</label>
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="City" value="@Model.userAddress.City" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row mb-md-3">
+        <div class="col-md-3">
+            <label>State:</label>
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="State" value="@Model.userAddress.State" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row mb-md-3">
+        <div class="col-md-3">
+            <label>Zip Code:</label>
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="ZipCode" value="@Model.userAddress.ZipCode" class="form-control" />
+        </div>
+    </div>
+    </div>
+    <div class="row mb-md-3">
+        <div class="col-md-3">
+            <label>File:</label>
+        </div>
+        <div class="col-md-3">
+            @if (Model.user.FileContent != null && Model.user.FileContent.Length > 0)
+            {
+                <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.user.FileContent)" alt="File Preview" />
+            }
+            else
+            {
+                <input type="file" name="FileContent" class="form-control" />
+            }
+        </div>
+    </div>
     <div class="mt-5">
     <div class="row mb-md-3">
         <div class="col-md-3 text-center">

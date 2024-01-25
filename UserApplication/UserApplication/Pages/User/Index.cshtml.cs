@@ -20,6 +20,9 @@ namespace UserApplication.Pages.User
         [BindProperty]   //instead of using this property we can create only object,but to simplify we have added
         public Users user { get; set; } = new Users();
 
+        [BindProperty]
+        public Address userAddress { get; set; } = new Address();
+
 
         public void OnGet()
         {
@@ -29,6 +32,7 @@ namespace UserApplication.Pages.User
         {
             try
             {
+              
                 user.Name = Request.Form["Name"];
                 user.Email = Request.Form["Email"];
                 user.Phone = Convert.ToInt32(Request.Form["Phone"]);
@@ -48,10 +52,16 @@ namespace UserApplication.Pages.User
                     user.FileContent = memoryStream.ToArray();
                 }
 
+                userAddress.Street=Request.Form["Street"];
+                userAddress.City = Request.Form["City"];
+                userAddress.State = Request.Form["State"];
+                userAddress.ZipCode = Request.Form["Zipcode"];
+            
+
 
 
                 DataAccessLayer dal = new DataAccessLayer();
-                dal.Saveuser(user, configuration);
+                dal.Saveuser(user, configuration,userAddress);
 
                 logger.LogInformation($"User {user.Name} successfully saved");
             }

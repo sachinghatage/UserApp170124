@@ -11,8 +11,9 @@
             <th>Id</th>
             <th>Name</th>
             <th>Email</th>
-            <th>phone</th>
             <th>Gender</th>
+            <th>City</th>
+            <th>State</th>
           
         </tr>
     </thead>
@@ -24,8 +25,9 @@
                 <td>@user.Id</td>
                 <td>@user.Name</td>
                 <td>@user.Email</td>
-                <td>@user.Phone</td>
                 <td>@user.UserGender</td>
+                <td>@user.UserAddress.City</td>
+                <td>@user.UserAddress.State</td>
                 <td>
                     <a class="btn btn-primary" href="/User/Edit?id=@user.Id">Edit</a> &nbsp;
                     <a class="btn btn-danger" href="/User/delete?id=@user.Id">Delete</a>

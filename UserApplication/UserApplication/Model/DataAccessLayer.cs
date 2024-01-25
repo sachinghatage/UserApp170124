@@ -5,13 +5,13 @@ namespace UserApplication.Model
 {
     public class DataAccessLayer
     {
-        public void Saveuser(Users user, IConfiguration configuration)
+        public void Saveuser(Users user, IConfiguration configuration,Address address)
         {
             using (
                 SqlConnection connection = new SqlConnection(configuration.GetConnectionString("DBCS").ToString()))
             {
-
-                string query = "INSERT INTO users (Name, Email, Phone, FileContent,Gender) VALUES (@Name, @Email, @Phone, CONVERT(VARBINARY(MAX), @FileContent),@Gender)";
+                connection.Open();
+                string query = "INSERT INTO users (Name, Email, Phone, FileContent,Gender) VALUES (@Name, @Email, @Phone, CONVERT(VARBINARY(MAX), @FileContent),@Gender); select SCOPE_IDENTITY();";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -21,8 +21,23 @@ namespace UserApplication.Model
                     command.Parameters.AddWithValue("@FileContent", user.FileContent); // Assuming user.FileContent is a byte array
                     command.Parameters.AddWithValue("@Gender", user.UserGender.ToString());//by default numbers are stored in db for enum so tostring() is used
 
-                    connection.Open();
-                    command.ExecuteNonQuery();
+                    
+                    int userId=Convert.ToInt32(command.ExecuteScalar());
+
+                    // Now insert the address with the obtained userId
+                    string addressQuery = "insert into address(UserId,Street,City,State,Zipcode) values(@UserId,@Street,@City,@State,@Zipcode)";
+
+                    using(SqlCommand addressCommand= new SqlCommand(addressQuery, connection))
+                    {
+                        addressCommand.Parameters.AddWithValue("@UserId",userId);
+                        addressCommand.Parameters.AddWithValue("@Street", address.Street);
+                        addressCommand.Parameters.AddWithValue("@City", address.City);
+                        addressCommand.Parameters.AddWithValue("@State", address.State);
+                        addressCommand.Parameters.AddWithValue("@Zipcode", address.ZipCode);
+
+                        addressCommand.ExecuteNonQuery();
+                    }
+                   
                 }
             }
         }
@@ -33,28 +48,31 @@ namespace UserApplication.Model
             using (SqlConnection connection = new SqlConnection(configuration.GetConnectionString("DBCS")))
             {
                 connection.Open();
-                /* int offset = (currentPage - 1) * pageSize;
-                 string query = "SELECT * FROM users ORDER By Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";*/
-                string query = "select * from users";
+               
+                string query = "select u.Id,u.name,u.email,u.gender,a.city,a.state from users u INNER JOIN address a on u.Id=a.userId";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    /*command.Parameters.AddWithValue("@Offset",offset);
-                    command.Parameters.AddWithValue("@PageSize",pageSize);*/
+                    
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             Users user = new Users();
-                            user.Id = Convert.ToInt32(reader["Id"]);
+                            user.Id =Convert.ToInt32( reader["Id"]);
                             user.Name = Convert.ToString(reader["Name"]);
                             user.Email = Convert.ToString(reader["Email"]);
-                            user.Phone = Convert.ToInt32(reader["Phone"]);
+                         
                             string userGender = Convert.ToString(reader["Gender"]);
 
                             if (Enum.TryParse(userGender, out Gender enumgender))
                             {
                                 user.UserGender = enumgender;
                             }
+
+                            Address address = new Address();
+                            address.City =Convert.ToString( reader["City"]);
+                            address.State = Convert.ToString(reader["State"]);
+                            user.UserAddress = address;
 
                             users.Add(user);
                         }
